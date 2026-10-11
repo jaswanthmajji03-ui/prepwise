@@ -57,3 +57,15 @@ function renderHelpDesk() {
 document.addEventListener('click', event => {
   if (event.target.closest('[data-help-action="doubts"]')) navigate('doubts');
 });
+const prepwiseNavigate = window.navigate;
+window.navigate = function(page) {
+  if (page !== 'help') return prepwiseNavigate(page);
+  if (window.restoreDashboard) window.restoreDashboard();
+  document.querySelectorAll('.nav-link').forEach(link => link.classList.toggle('active', link.dataset.page === 'help'));
+  document.getElementById('crumbCurrent').textContent = 'Help Desk';
+  document.getElementById('sidebar').classList.remove('open');
+  renderHelpDesk();
+};
+const helpDeskStyle = document.createElement('style');
+helpDeskStyle.textContent = '.helpdesk-heading{margin-bottom:18px}.helpdesk-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:16px;align-items:start}.helpdesk-panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:21px}.helpdesk-panel-heading{display:flex;align-items:center;gap:11px;margin-bottom:13px}.helpdesk-icon{display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:11px;background:#f1f8f4;color:#63a786;font-size:18px}.helpdesk-icon-purple{background:#f1f0ff;color:#716bd3}.helpdesk-panel-heading h2{margin:4px 0 0;font:700 15px var(--display);letter-spacing:-.3px}.helpdesk-faq details{border-top:1px solid #f0f0f4;padding:12px 1px}.helpdesk-faq summary{color:#4c4d63;font:600 11px/1.5 var(--font);cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}.helpdesk-faq summary::-webkit-details-marker{display:none}.helpdesk-faq summary:after{content:"＋";color:#7770d1;font-size:13px}.helpdesk-faq details[open] summary:after{content:"−"}.helpdesk-faq details p,.helpdesk-intro{font:10px/1.7 var(--font);color:#85869a;margin:8px 0 0}.helpdesk-doubt-button{margin-top:10px}.helpdesk-form{display:grid;gap:11px}.helpdesk-form label{display:grid;gap:6px;color:#56576d;font-size:10px;font-weight:700}.helpdesk-form input,.helpdesk-form select,.helpdesk-form textarea{width:100%;border:1px solid #e8e8ef;border-radius:7px;padding:10px;color:#292a3e;background:#fff;font:11px var(--font);outline:none}.helpdesk-form input,.helpdesk-form select{height:39px;padding-top:0;padding-bottom:0}.helpdesk-form textarea{resize:vertical;min-height:100px;line-height:1.5}.helpdesk-form input:focus,.helpdesk-form select:focus,.helpdesk-form textarea:focus{border-color:#8b84dc;box-shadow:0 0 0 3px #827add20}.helpdesk-note{font:9px/1.6 var(--font);color:#9293a7;margin:0}@media(max-width:850px){.helpdesk-grid{grid-template-columns:1fr}}';
+document.head.appendChild(helpDeskStyle);
